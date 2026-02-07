@@ -1,0 +1,10 @@
+services:
+  db:
+    image: postgres:17
+    container_name: sub_manager_db
+    environment:
+      POSTGRES_USER: dev_user
+      POSTGRES_PASSWORD: dev_password
+      POSTGRES_DB: sub_db
+    ports:
+      - "5432:5432"

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Smart Sub Manager | Tsuprenko</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-white font-sans p-10">
+<div class="max-w-4xl mx-auto">
+    <h1 class="text-4xl font-bold mb-8 text-blue-400">Subscription Analytics</h1>
+
+    <!-- Total Cost Card -->
+    <div class="bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-700 mb-8">
+        <h2 class="text-gray-400 uppercase text-sm font-semibold tracking-wider">Total Monthly Cost (PLN)</h2>
+        <p id="totalCost" class="text-5xl font-mono mt-2 text-green-400">Loading...</p>
+    </div>
+
+    <!-- Subs Table -->
+    <div class="bg-gray-800 rounded-xl overflow-hidden shadow-lg border border-gray-700">
+        <table class="w-full text-left">
+            <thead class="bg-gray-700 text-gray-300 uppercase text-xs">
+            <tr>
+                <th class="px-6 py-4">Provider</th>
+                <th class="px-6 py-4">Amount</th>
+                <th class="px-6 py-4">Currency</th>
+            </tr>
+            </thead>
+            <tbody id="subsTable" class="divide-y divide-gray-700">
+            <!-- Data will be here -->
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    async function loadData() {
+        // Загружаем список всех подписок
+        const subsResponse = await fetch('/api/v1/subscriptions');
+        const subs = await subsResponse.json();
+        const tableBody = document.getElementById('subsTable');
+        tableBody.innerHTML = subs.map(s => `
+            <tr class="hover:bg-gray-750 transition">
+                <td class="px-6 py-4 font-medium">${s.providerName}</td>
+                <td class="px-6 py-4 font-mono">${s.amount.toFixed(2)}</td>
+                <td class="px-6 py-4"><span class="bg-blue-900 text-blue-200 px-2 py-1 rounded text-xs font-bold">${s.currency}</span></td>
+            </tr>
+        `).join('');
+
+        // Загружаем общую сумму через наш NBP сервис
+        const totalResponse = await fetch('/api/v1/subscriptions/total');
+        const total = await totalResponse.json();
+        document.getElementById('totalCost').innerText = total.toFixed(2);
+    }
+
+    loadData();
+</script>
+</body>
+</html>
