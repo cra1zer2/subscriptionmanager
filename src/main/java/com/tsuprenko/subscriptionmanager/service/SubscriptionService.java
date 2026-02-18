@@ -51,4 +51,8 @@ public class SubscriptionService {
         return total.setScale(2, RoundingMode.HALF_UP);
     }
 
+    public void deleteSubscription(Long id){
+        subscriptionRepository.deleteById(id);
+    }
+
 }

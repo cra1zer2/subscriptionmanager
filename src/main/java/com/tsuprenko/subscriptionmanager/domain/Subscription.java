@@ -21,7 +21,7 @@ public class Subscription {
 
     @NotNull
     @Positive(message = "Amount must be positive")
-    private BigDecimal amount;w
+    private BigDecimal amount;
 
     @NotBlank
     @Size(min = 3, max = 3)

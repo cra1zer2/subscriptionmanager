@@ -33,4 +33,10 @@ public class SubscriptionController {
     public BigDecimal getTotalCost() {
         return subscriptionService.calculateTotalMonthlyCost();
     }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable Long id) {
+        subscriptionService.deleteSubscription(id);
+    }
 }
